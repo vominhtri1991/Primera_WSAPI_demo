@@ -7,7 +7,7 @@ def getSessionKey():
 	headers = {'Content-type': 'application/json','Accept': 'application/json'}
 	data={'user':'3paradm','password':'3pardata'}
 	data=json.dumps(data)
-	response = requests.post(url="https://192.168.129.110/api/v1/credentials",headers=headers,data=data,verify=False)
+	response = requests.post(url="https://IP_Storage/api/v1/credentials",headers=headers,data=data,verify=False)
 	result=response.json()['key']
 	return result
 
@@ -15,7 +15,7 @@ def getVolumes(key):
 	print("Key: "+key)
 	headers = {'Content-type': 'application/json','Accept': 'application/json','X-HP3PAR-WSAPI-SessionKey':key,\
 	'charset':'UTF-8','user':'3paradm','password':'3pardata'}
-	response = requests.get("https://192.168.129.110/api/v1/volumes",headers=headers,auth = HTTPBasicAuth(username, password),verify=False)
+	response = requests.get("https://IP_Storage/api/v1/volumes",headers=headers,auth = HTTPBasicAuth(username, password),verify=False)
 	list_vol=[]
 	for i in response.json()['members']:
 		#print(i)
@@ -33,12 +33,13 @@ def createLUN(key,name,size,cpg):
 	'charset':'UTF-8','user':'3paradm','password':'3pardata'}
 	data={'name':name,'sizeMiB':size,'cpg':cpg,'tpvv':True}
 	data=json.dumps(data)
-	response = requests.post(url="https://192.168.129.110/api/v1/volumes",headers=headers,data=data,verify=False)
+	response = requests.post(url="https://IP_Storage/api/v1/volumes",headers=headers,data=data,verify=False)
 	print(response.json())
 
 
 key=getSessionKey()
 getVolumes(key)
-createLUN(key,'VOLUME-TEST05',30000,'SSD_r6')
+print("-------------------------------------------")
+createLUN(key,'VOLUME-TEST06',30000,'SSD_r6')
 print("-------------------------------------------")
 getVolumes(key)
